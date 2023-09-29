@@ -63,13 +63,19 @@ jobs:
       
     - name: Checkout
       uses: actions/checkout@v2
-  
+
+    - name: Get current notebook name
+      id: notebook-name
+      shell: bash
+      run: |
+        echo NOTEBOOK_NAME=${{ matrix.notebook }} >> $GITHUB_OUTPUT
+
     - name: Build the Docker image
       id: build-image
       run: |
         make generate-dockerfiles
         echo $(pwd)
-        docker build output/${{ matrix.notebook }}/Dockerfile --tag $DOCKER_USER/${{ matrix.notebook }}:${{ steps.date.outputs.date }}
+        docker build output/$NOTEBOOK_NAME/Dockerfile --tag $DOCKER_USER/$NOTEBOOK_NAME:${{ steps.date.outputs.date }}
 
     - name: Echo disk usage after build completion
       run: ./.github/scripts/echo_usage.sh
@@ -78,4 +84,4 @@ jobs:
     - run: ./.github/scripts/cleanup_runner.sh
 
     - name: Docker Push
-      run: docker push $DOCKER_USER/${{ matrix.notebook }}:${{ steps.date.outputs.date }}
+      run: docker push $DOCKER_USER/$NOTEBOOK_NAME:${{ steps.date.outputs.date }}
