@@ -65,17 +65,17 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Build the Docker image
-      id: build-image
-      run: docker build output/${{ matrix.notebook }}/Dockerfile --tag $DOCKER_USER/${{ matrix.notebook }}:${{ steps.date.outputs.date }}
+    # - name: Build the Docker image
+    #   id: build-image
+    #   run: docker build output/${{ matrix.notebook }}/Dockerfile --tag `$DOCKER_USER/`${{ matrix.notebook }}:${{ steps.date.outputs.date }}
 
     - name: Build and push Docker image
       uses: docker/build-push-action
       with:
-        context: .
+        context: output/${{ matrix.notebook }}
         file: ./Dockerfile
         push: true
-        tags: ${{ matrix.notebook }}
+        tags: $DOCKER_USER/${{ matrix.notebook }}
         labels: ${{ steps.date.outputs.date }}
 
     # - name: Echo disk usage after build completion
