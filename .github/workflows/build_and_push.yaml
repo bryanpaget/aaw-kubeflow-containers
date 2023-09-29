@@ -17,7 +17,7 @@ jobs:
   pre-build-checks:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Assert committed ./output folder matches `make generate-dockerfiles` output
       run: |
@@ -44,12 +44,14 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v2
+          
+    - name: Checkout the Repo
+      uses: actions/checkout@v4
 
-    - name: docker login
+    - name: Login to Dockerhub
       run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD  
     
-    - name: Get Current Date
+    - name: Get the Current Date
       id: date
       run: echo date=$(date +'%Y-%m-%d--%M-%S') >> $GITHUB_OUTPUT
 
@@ -61,9 +63,6 @@ jobs:
 
     - name: Echo disk usage before build start
       run: ./.github/scripts/echo_usage.sh
-      
-    - name: Checkout
-      uses: actions/checkout@v2
 
     # - name: Build the Docker image
     #   id: build-image
@@ -72,8 +71,8 @@ jobs:
     - name: Build and push Docker image
       uses: docker/build-push-action@v5.0.0
       with:
-        context: output/${{ matrix.notebook }}
-        file: ./Dockerfile
+        context: .
+        file: ./output/${{ matrix.notebook }}/Dockerfile
         push: true
         tags: ${{secrets.DOCKER_USER}}/${{ matrix.notebook }}
         labels: ${{ steps.date.outputs.date }}
