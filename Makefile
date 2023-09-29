@@ -233,9 +233,6 @@ push/%:
 	docker images $${REPO}$(notdir $@) --format="{{ .Tag }}" &&\
 	docker push --all-tags $(DARGS) "$${REPO}"$(notdir $@)
 
-###################################
-######     Image Testing     ######
-###################################
 check-python-venv:
 	@if $(PYTHON) --version> /dev/null 2>&1; then \
 		echo "Found dev python venv via $(PYTHON)"; \
