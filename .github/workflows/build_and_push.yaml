@@ -69,11 +69,20 @@ jobs:
       id: build-image
       run: docker build output/${{ matrix.notebook }}/Dockerfile --tag $DOCKER_USER/${{ matrix.notebook }}:${{ steps.date.outputs.date }}
 
-    - name: Echo disk usage after build completion
-      run: ./.github/scripts/echo_usage.sh
+    - name: Build and push Docker image
+      uses: docker/build-push-action
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true
+        tags: ${{ matrix.notebook }}
+        labels: ${{ steps.date.outputs.date }}
 
-    # Free up space from build process (containerscan action will run out of space if we don't)
-    - run: ./.github/scripts/cleanup_runner.sh
+    # - name: Echo disk usage after build completion
+    #   run: ./.github/scripts/echo_usage.sh
 
-    - name: Docker Push
-      run: docker push $DOCKER_USER/${{ matrix.notebook }}:${{ steps.date.outputs.date }}
+    # # Free up space from build process (containerscan action will run out of space if we don't)
+    # - run: ./.github/scripts/cleanup_runner.sh
+
+    # - name: Docker Push
+    #   run: docker push $DOCKER_USER/${{ matrix.notebook }}:${{ steps.date.outputs.date }}
