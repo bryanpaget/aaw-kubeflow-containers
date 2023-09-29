@@ -71,7 +71,7 @@ jobs:
     - name: Build and push Docker image
       uses: docker/build-push-action@v5.0.0
       with:
-        context: .
+        context: ./output/${{ matrix.notebook }}/
         file: ./output/${{ matrix.notebook }}/Dockerfile
         push: true
         tags: ${{secrets.DOCKER_USER}}/${{ matrix.notebook }}
