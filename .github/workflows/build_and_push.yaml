@@ -64,7 +64,7 @@ jobs:
     - name: Build the Docker image
       id: build-image
       run: |
-        echo $(pwd)
+        cd
         docker build ./output/${{ matrix.notebook }}/Dockerfile --tag $DOCKER_USER/${{ matrix.notebook }}:${{ steps.date.outputs.date }}
 
     - name: Echo disk usage after build completion
