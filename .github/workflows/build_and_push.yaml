@@ -60,11 +60,14 @@ jobs:
 
     - name: Echo disk usage before build start
       run: ./.github/scripts/echo_usage.sh
-    
+      
+    - name: Checkout
+      uses: actions/checkout@v2
+  
     - name: Build the Docker image
       id: build-image
       run: |
-        cd
+        echo $(pwd)
         docker build ./output/${{ matrix.notebook }}/Dockerfile --tag $DOCKER_USER/${{ matrix.notebook }}:${{ steps.date.outputs.date }}
 
     - name: Echo disk usage after build completion
