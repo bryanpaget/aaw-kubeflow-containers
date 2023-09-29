@@ -67,7 +67,7 @@ jobs:
 
     # - name: Build the Docker image
     #   id: build-image
-    #   run: docker build output/${{ matrix.notebook }}/Dockerfile --tag `$DOCKER_USER/`${{ matrix.notebook }}:${{ steps.date.outputs.date }}
+    #   run: docker build output/${{ matrix.notebook }}/Dockerfile --tag `${{secrets.DOCKER_USER}}/`${{ matrix.notebook }}:${{ steps.date.outputs.date }}
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v5.0.0
@@ -75,7 +75,7 @@ jobs:
         context: output/${{ matrix.notebook }}
         file: ./Dockerfile
         push: true
-        tags: $DOCKER_USER/${{ matrix.notebook }}
+        tags: ${{secrets.DOCKER_USER}}/${{ matrix.notebook }}
         labels: ${{ steps.date.outputs.date }}
 
     # - name: Echo disk usage after build completion
