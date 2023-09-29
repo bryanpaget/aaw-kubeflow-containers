@@ -64,6 +64,7 @@ jobs:
     
     - name: Build the Docker image
       id: build-image
+      uses: actions/checkout@v2
       run: docker build output/${{ matrix.notebook }}/Dockerfile --tag $DOCKER_USER/${{ matrix.notebook }}:${{ steps.date.outputs.date }}
 
     - name: Echo disk usage after build completion
