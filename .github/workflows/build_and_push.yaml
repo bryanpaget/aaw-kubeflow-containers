@@ -17,7 +17,7 @@ jobs:
   pre-build-checks:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@main
 
     - name: Assert committed ./output folder matches `make generate-dockerfiles` output
       run: |
@@ -43,7 +43,6 @@ jobs:
     needs: pre-build-checks
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
     - name: docker login
       run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD  
     
@@ -60,9 +59,12 @@ jobs:
     - name: Echo disk usage before build start
       run: ./.github/scripts/echo_usage.sh
     
+    - name: Checkout
+      uses: actions/checkout@v2
+    
     - name: Build the Docker image
       id: build-image
-      run: docker build . --file Dockerfile --tag $DOCKER_USER/${{ matrix.notebook }}:${{ steps.date.outputs.date }}
+      run: docker build output/${{ matrix.notebook }}/Dockerfile --tag $DOCKER_USER/${{ matrix.notebook }}:${{ steps.date.outputs.date }}
 
     - name: Echo disk usage after build completion
       run: ./.github/scripts/echo_usage.sh
