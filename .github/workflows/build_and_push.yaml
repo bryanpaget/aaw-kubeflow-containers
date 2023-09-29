@@ -43,6 +43,8 @@ jobs:
     needs: pre-build-checks
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@main
+
     - name: docker login
       run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD  
     
