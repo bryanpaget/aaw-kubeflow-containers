@@ -49,6 +49,9 @@ jobs:
     - name: Get Current Date
       id: date
       run: echo date=$(date +'%Y-%m-%d--%M-%S') >> $GITHUB_OUTPUT
+    
+    - name: Checkout
+      uses: actions/checkout@v2
 
     - name: Echo disk usage before clean up
       run: ./.github/scripts/echo_usage.sh
@@ -58,9 +61,6 @@ jobs:
 
     - name: Echo disk usage before build start
       run: ./.github/scripts/echo_usage.sh
-    
-    - name: Checkout
-      uses: actions/checkout@v2
     
     - name: Build the Docker image
       id: build-image
